@@ -15,10 +15,10 @@ Num_sec4 = N4/fS4;
 melodyMatrix = [bass drums guitars synths];
 tmpVector = ones(4,1);
 melody = melodyMatrix * tmpVector;
-sound(melody, fS1)
+%%sound(melody, fS1)
 %% Minus one
 mellody = melody - bass;
-sound(mellody, fS1);
+%%sound(mellody, fS1);
 
 %% Signal distortion
 T = Num_sec2/2;
@@ -28,5 +28,32 @@ volumeMod = volumeMod';
 volumeMod = volumeMod.* melody;
 volumeMod = volumeMod.^2 * 2 - 1;
 c = volumeMod .* melody;
-sound(c, fS3);
+%%sound(c, fS3);
 %% Shorten melody
+X = melodyMatrix';
+tmp = X(1:1:length(X(:))/2);
+halfMelodyMatrix = reshape(tmp, 4,length(tmp)/4);
+halfMelody = sum(halfMelodyMatrix);
+%%sound(halfMelody,fS1)
+
+N = size(melodyMatrix, 1);
+melodyMatrixHalf = melodyMatrix(1:N/2, :);
+halfmelody = sum(melodyMatrixHalf, 2);
+%%sound(halfmelody, fS1);
+%% 2-channel sound
+Ch1 = melody(melody > 0);
+Ch2 = melody(melody < 0);
+Lmx = length(Ch1);
+Fsmx = Lmx/Num_sec1;
+Lmn = length(Ch2);
+Fsmn = Lmn/Num_sec2;
+%%sound(Ch1,Fsmx);
+Ch1 = melody .* (melody > 0.5);
+Ch2 = melody .* (melody <= 0.5);
+multiSig = [Ch1,Ch2];
+flip_song = flip(multiSig);
+sound(flip_song,fS1);
+%%
+Y = [1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16];
+K = Y(3,2)
+L = Y(7)
